@@ -7,3 +7,34 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+/* para daysiui */
+
+/* @import "tailwindcss"; */
+
+@source "../**/*.blade.php";
+@source "../**/*.js";
+@source "../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php";
+@source "../../storage/framework/views/*.php";
+
+@plugin "daisyui";
+
+/* fin daysiui */
+
+/* para LivewirePowerGrid */
+
+/*resources/css/app.css*/
+
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme=night], [data-theme=night] *));
+
+@source '../../app/Livewire/*Table.php';
+@source '../../app/Livewire/**/*Table.php';
+@source '../../vendor/power-components/livewire-powergrid/src/Themes/DaisyUI.php';
+@source '../../vendor/power-components/livewire-powergrid/resources/views/**/*.php';
+/* resources/css/app.css */
+
+@import "flatpickr/dist/flatpickr.min.css";
+
+/* fin LivewirePowerGrid */
