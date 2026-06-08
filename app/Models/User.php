@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Models\Intranet\Profile;
 
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
@@ -31,4 +33,19 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function profile(): HasOne
+    {
+        return $this->hasOne(Profile::class);
+    }
+
+    // public function getAddressAttribute()
+    // {
+    //     return $this->profile->address ?? '';
+    // }
+    //
+    // public function getPhoneAttribute()
+    // {
+    //     return $this->profile->phone ?? '';
+    // }
 }

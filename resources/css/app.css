@@ -17,7 +17,133 @@
 @source "../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php";
 @source "../../storage/framework/views/*.php";
 
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: mexa --default, mexaDark --prefersdark;
+}
+@plugin "daisyui/theme" {
+  name: "mexa";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+
+  /* Colores base - Blanco y grises */
+  --color-base-100: oklch(100% 0 0);
+  --color-base-200: oklch(96% 0 0);
+  --color-base-300: oklch(92% 0 0);
+  --color-base-content: oklch(21% 0.006 285.5);
+
+  /* Primary - Verde México */
+  --color-primary: oklch(55% 0.15 160);
+  --color-primary-content: oklch(98% 0 0);
+
+  /* Secondary - Rojo México */
+  --color-secondary: oklch(55% 0.2 30);
+  --color-secondary-content: oklch(98% 0 0);
+
+  /* Accent - Dorado */
+  --color-accent: oklch(75% 0.15 85);
+  --color-accent-content: oklch(21% 0.006 285.5);
+
+  /* Neutral - Gris oscuro */
+  --color-neutral: oklch(35% 0.01 285.5);
+  --color-neutral-content: oklch(98% 0 0);
+
+  /* Info - Azul */
+  --color-info: oklch(65% 0.2 240);
+  --color-info-content: oklch(98% 0 0);
+
+  /* Success - Verde */
+  --color-success: oklch(60% 0.15 145);
+  --color-success-content: oklch(98% 0 0);
+
+  /* Warning - Naranja */
+  --color-warning: oklch(75% 0.15 75);
+  --color-warning-content: oklch(21% 0.006 285.5);
+
+  /* Error - Rojo */
+  --color-error: oklch(58% 0.2 28);
+  --color-error-content: oklch(98% 0 0);
+
+  /* border radius */
+  --radius-selector: 0.5rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+
+  /* base sizes */
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+
+  /* border size */
+  --border: 1px;
+
+  /* effects */
+  --depth: 1;
+  --noise: 0;
+}
+
+@plugin "daisyui/theme" {
+  name: "mexaDark";
+  default: false;
+  prefersdark: true;
+  color-scheme: dark;
+
+  /* Colores base - Oscuros (azul-negro) */
+  --color-base-100: oklch(18% 0.01 260);
+  --color-base-200: oklch(14% 0.01 260);
+  --color-base-300: oklch(10% 0.01 260);
+  --color-base-content: oklch(85% 0.01 260);
+
+  /* Primary - Verde México (más brillante en oscuro) */
+  --color-primary: oklch(62% 0.16 160);
+  --color-primary-content: oklch(98% 0 0);
+
+  /* Secondary - Rojo México (más brillante en oscuro) */
+  --color-secondary: oklch(62% 0.22 30);
+  --color-secondary-content: oklch(98% 0 0);
+
+  /* Accent - Dorado (más brillante en oscuro) */
+  --color-accent: oklch(78% 0.16 85);
+  --color-accent-content: oklch(18% 0.01 260);
+
+  /* Neutral - Negro/gris muy oscuro */
+  --color-neutral: oklch(12% 0.01 260);
+  --color-neutral-content: oklch(85% 0.01 260);
+
+  /* Info - Azul */
+  --color-info: oklch(65% 0.2 240);
+  --color-info-content: oklch(98% 0 0);
+
+  /* Success - Verde */
+  --color-success: oklch(60% 0.15 145);
+  --color-success-content: oklch(98% 0 0);
+
+  /* Warning - Naranja */
+  --color-warning: oklch(75% 0.15 75);
+  --color-warning-content: oklch(18% 0.01 260);
+
+  /* Error - Rojo */
+  --color-error: oklch(62% 0.22 28);
+  --color-error-content: oklch(98% 0 0);
+
+  /* border radius */
+  --radius-selector: 0.5rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+
+  /* base sizes */
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+
+  /* border size */
+  --border: 1px;
+
+  /* effects */
+  --depth: 1;
+  --noise: 0;
+}
+
+
+
 
 /* fin daysiui */
 
@@ -38,3 +164,9 @@
 @import "flatpickr/dist/flatpickr.min.css";
 
 /* fin LivewirePowerGrid */
+
+.bg-cesped {
+    background-image: url('/storage/cesped.jpg');
+    background-repeat: repeat;
+    background-size: auto; /* mantiene el tamaño original de la imagen */
+}

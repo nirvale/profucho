@@ -16,8 +16,9 @@ return [
     */
 
     // 'theme' => Tailwind::class,
-    'theme' => \PowerComponents\LivewirePowerGrid\Themes\DaisyUI::class,
+    // 'theme' => \PowerComponents\LivewirePowerGrid\Themes\DaisyUI::class,
     // 'theme' => \PowerComponents\LivewirePowerGrid\Themes\Bootstrap5::class,
+    'theme' => \App\PowerGridThemes\ProfuchoDaisyUI::class,
 
     'cache_ttl' => null,
 
