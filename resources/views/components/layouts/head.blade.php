@@ -10,11 +10,12 @@
 
             if (savedTheme) {
                 document.documentElement.setAttribute('data-theme', savedTheme);
-                console.log(savedTheme);
+                // console.log(savedTheme);
             }
         })();
     </script>
     <!-- Styles / Scripts -->
+    @fonts
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
       @if ($powergrid)
         @vite(array_merge( ['resources/css/app.css','resources/js/app.js','resources/js/powergrid.js'],$js))

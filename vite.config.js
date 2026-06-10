@@ -8,7 +8,13 @@ import mkcert from 'vite-plugin-mkcert';
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js','resources/js/hero.js'],
+            input: [
+              'resources/css/app.css',
+              'resources/js/app.js',
+              'resources/js/hero.js',
+              'resources/js/powergrid.js',
+              'resources/js/gambit.js'
+            ],
             refresh: true,
             fonts: [
                 bunny('Instrument Sans', {
