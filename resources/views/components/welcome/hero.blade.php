@@ -2,9 +2,11 @@
     <main class="flex max-w-[400px] w-full flex-col-reverse lg:max-w-4xl lg:flex-row bg-base-100 rounded-lg shadow-lg shadow-neutral/50">
         <!-- Left Column: Text Content -->
         <div class="card w-full">
-            <div class="card-body p-6 pb-6 lg:p-20 lg:pb-10 items-center">
-                <h1 class="font-medium text-lg mb-1">Let's get started</h1>
-                <p class="text-base-content/70 mb-2">
+            {{-- <div class="card-body p-6 pb-6 lg:p-20 lg:pb-10 items-center"> --}}
+                <div class="card-body p-6 pb-6 lg:p-10 lg:pb-10 items-center">
+                {{-- <h1 class="font-medium text-lg mb-1">Let's get started</h1> --}}
+                <img src="{{ asset('storage/fifacup.jpeg') }}" class="rounded-md" alt="">
+                {{-- <p class="text-base-content/70 mb-2">
                     With so many options available to you,<br /> we suggest you start with the following:
                 </p>
 
@@ -26,7 +28,7 @@
                             <path d="M7.70833 6.95834V2.79167H3.54167M2.5 8L7.5 3.00001" stroke="currentColor" stroke-linecap="square"/>
                         </svg>
                     </a>
-                </p>
+                </p> --}}
             </div>
         </div>
 

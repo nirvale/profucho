@@ -10,6 +10,7 @@
 
             if (savedTheme) {
                 document.documentElement.setAttribute('data-theme', savedTheme);
+                console.log(savedTheme);
             }
         })();
     </script>

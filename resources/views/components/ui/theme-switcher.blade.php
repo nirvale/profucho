@@ -1,5 +1,5 @@
 @props(['initialTheme' => null])
-  <label class="swap swap-rotate">
+  <label class="swap swap-rotate items-center justify-center">
       <input id="theme-swap" type="checkbox" class="theme-controller" value="mexaDark"
              @if($initialTheme === 'mexaDark') checked @endif />
 

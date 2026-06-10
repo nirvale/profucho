@@ -12,6 +12,10 @@ Route::middleware(['permission:Dashboard'])->group(function () {
     Route::get('/', [IntranetController::class, 'dashboard'])->name('dashboard');
 });
 
+Route::middleware(['permission:Dashboard'])->group(function () {
+    Route::get('/fases/grupos', [IntranetController::class, 'grupos'])->name('fases.grupos');
+});
+
 Route::middleware(['permission:Administrar usuarios'])->group(function () {
     Route::get('/admin/users', [IntranetController::class, 'users'])->name('admin.users');
 

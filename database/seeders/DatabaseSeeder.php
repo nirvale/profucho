@@ -22,6 +22,12 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             ProfileSeeder::class,
+            VenueSeeder::class,
+            TeamSeeder::class,
+            StageSeeder::class,
+            GameSeeder::class,
+            AmountSeeder::class,
+
 
         ]);
     }

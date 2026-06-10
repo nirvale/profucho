@@ -24,7 +24,7 @@ final class UserTable extends PowerGridComponent
 {
     use AuthorizesRequests;
     public string $tableName = 'userTable';
-    public bool $showErrorBag = true;
+    public bool $showErrorBag = false;
     // private $idEdit;
     // public $email;
     // public $name;
