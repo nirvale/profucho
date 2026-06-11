@@ -21,6 +21,11 @@ Route::middleware(['permission:Administrar usuarios'])->group(function () {
 
 });
 
+Route::middleware(['permission:Administrar operación'])->group(function () {
+    Route::get('/admin/games', [IntranetController::class, 'games'])->name('admin.games');
+
+});
+
 Route::middleware([''])->group(function () {
     Route::get('/user/avatar/{filename}', [ProfileController::class, 'avatar'])->name('avatar.displayImage');
 });

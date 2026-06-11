@@ -321,10 +321,10 @@ final class UserTable extends PowerGridComponent
             } elseif ($field == 'is_active' && $value) {
                 $user->removeRole('Suspendido');
             }
-            DB::Commit();
+            DB::commit();
             $this->skipRender();
         } catch (\Exception $e) {
-            DB::beginRollback();
+            DB::rollback();
             // Log::info('actualizando toggeable: '.$id."\n");
         }
         //

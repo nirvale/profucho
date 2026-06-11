@@ -165,7 +165,7 @@ final class GroupFaseTable extends PowerGridComponent
         try {
           DB::beginTransaction();
           $this->user->profile->enabled_1=true;
-          $games=Game::where('stage_id','=',1)->get();
+          $games=Game::where('stage_id','=',$this->stage->id)->where('is_active','=',1)->get();
 
           foreach ($games as $game) {
             $bet=Bet::create([

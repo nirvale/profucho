@@ -24,6 +24,12 @@ class IntranetController extends Controller
     return view('intranet.admin.users');
   }
 
+  public function games()
+  {
+     $this->authorize('Administrar operación');
+    return view('intranet.admin.games');
+  }
+
   public function grupos()
   {
       return view('intranet.fases.grupos');
