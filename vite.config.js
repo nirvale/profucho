@@ -13,7 +13,8 @@ export default defineConfig({
               'resources/js/app.js',
               'resources/js/hero.js',
               'resources/js/powergrid.js',
-              'resources/js/gambit.js'
+              'resources/js/gambit.js',
+              'resources/js/master_gambit.js'
             ],
             refresh: true,
             fonts: [
