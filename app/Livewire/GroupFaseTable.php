@@ -123,7 +123,7 @@ final class GroupFaseTable extends PowerGridComponent
                     // 'wire:target'=>'newUser',
                     // 'wire:click' => 'newUser',
                 ])
-                ->id('play'),
+                ->id('play-button'),
             Button::add('badge')
                 ->slot(view('components.ui.forms.badge', [
                   // 'label' => 'test',
