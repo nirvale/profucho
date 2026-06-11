@@ -71,6 +71,7 @@ new class extends Component
                <summary>{{ __('Settings')}}</summary>
                <ul>
                  <li class=""><a href="{{ route('admin.users') }}">{{ __('Users')}}</a></li>
+                 <li class=""><a href="{{ route('admin.games') }}">{{ __('Games')}}</a></li>
                  {{-- <li><a>item 2</a></li> --}}
                </ul>
              </details>
@@ -104,6 +105,7 @@ new class extends Component
                <summary>{{ __('Settings')}}</summary>
                <ul>
                  <li class=""><a href="{{ route('admin.users') }}">{{ __('Users')}}</a></li>
+                 <li class=""><a href="{{ route('admin.games') }}">{{ __('Games')}}</a></li>
                  {{-- <li><a>item 2</a></li> --}}
                </ul>
              </details>
