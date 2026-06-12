@@ -31,7 +31,7 @@
         {{-- <li><a>Sidebar Item 2</a></li> --}}
         @if (Route::has('login'))
                 @auth
-                    {{-- <li><a href="{{ route('dashboard') }}">Dashboard</a></li> --}}
+                    <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
                     <li><a href="{{ route('fases.grupos') }}" class="{{ request()->routeIs('fases.grupos') ? 'menu-active' : '' }}">1 Fase</a></li>
                 @else
                     <li><a href="{{ route('login') }}">Log In</a></li>
