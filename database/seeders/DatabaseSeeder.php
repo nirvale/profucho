@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             StageSeeder::class,
             GameSeeder::class,
             AmountSeeder::class,
+            UpdateGamesRoundSeeder::class,
 
 
         ]);

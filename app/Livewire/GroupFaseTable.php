@@ -29,7 +29,10 @@ final class GroupFaseTable extends PowerGridComponent
     public bool $showErrorBag = true;
     public $user;
     public $stage;
+    public $stageFull;
+    public $round;
     public $suscribed;
+    public $roundenable;
     public $init;
     public $amount;
     public $home_score_p;
@@ -39,16 +42,16 @@ final class GroupFaseTable extends PowerGridComponent
     public function mount(): void
     {
        parent::mount();
-        // Esta lógica se ejecuta después de que PowerGrid está listo
+        // dd($this->round);
         $this->user = auth()->user();
-        $this->suscribed=$this->user->profile->enabled_1;
+        $this->suscribed=$this->user->profile->{"enabled_{$this->round}"};
         $this->init=$this->user->profile->init_1;
-        $this->stage = Stage::findOrFail(1);
-        $this->amount = Amount::where('is_active','=',1)->where('stage_id','=',$this->stage->id)->first();
+        $this->stageFull = Stage::findOrFail($this->stage);
+        $this->amount = Amount::where('is_active','=',1)->where('stage_id','=',$this->stage)->first();
         // dd($this->user->profile);
         // Puedes hacer otras inicializaciones aquí
         // Pero NO modifiques datasource directamente
-        // $query = Bet::query()->where('user_id',$this->user->id)->where('stage_id',$this->stage->id)->get();
+        // $query = Bet::query()->where('user_id',$this->user->id)->where('stage_id',$this->stage)->get();
         // dd($query[0]->user->bets);
     }
 
@@ -109,7 +112,7 @@ final class GroupFaseTable extends PowerGridComponent
                 ->attributes([
                     'x-data' => 'subTrackerAlive',
                     // 'x-show'=>'showNewButton',
-                    // 'x-init' => "showNewButton = !{$this->user->profile->enabled_1}",
+                    // 'x-init' => "showNewButton = !{$this->user->profile->{"enabled_{$this->round}"}}",
                     'x-on:click' => 'switchShowNewButton; $dispatch(\'suscribe\');',
                     ':disabled' => '!showNewButton',
                     '@shownewbutton.window' => 'switchShowNewButton',
@@ -133,7 +136,7 @@ final class GroupFaseTable extends PowerGridComponent
                 ->attributes([
                     'x-data' => 'subTrackerAlive',
                     // 'x-show'=>'showNewButton',
-                    // 'x-init' => "showNewButton = !{$this->user->profile->enabled_1};",
+                    // 'x-init' => "showNewButton = !{$this->user->profile->{"enabled_{$this->round}"}};",
                     // 'x-on:click' => 'switchShowNewButton;',
                     // ':disabled' => '!showNewButton',
                     // '@shownewbutton.window' => 'switchShowNewButton',
@@ -161,11 +164,11 @@ final class GroupFaseTable extends PowerGridComponent
     public function suscribe(){
 
 
-      if (!$this->user->profile->enabled_1) {
+      if (!$this->user->profile->{"enabled_{$this->round}"}) {
         try {
           DB::beginTransaction();
-          $this->user->profile->enabled_1=true;
-          $games=Game::where('stage_id','=',$this->stage->id)->where('is_active','=',1)->get();
+          $this->user->profile->{"enabled_{$this->round}"}=true;
+          $games=Game::where('stage_id','=',$this->stage)->where('is_active','=',1)->where('round','=',$this->round)->get();
 
           foreach ($games as $game) {
             $bet=Bet::create([
@@ -179,7 +182,7 @@ final class GroupFaseTable extends PowerGridComponent
           $this->init=true;
           $this->user->push();
           DB::commit();
-          $this->dispatch('notifyalpine', '¡Se ha suscrito con éxito!', 'Se ha suscrito correctamante a:<br>'.$this->stage->name, 'success', 0);
+          $this->dispatch('notifyalpine', '¡Se ha suscrito con éxito!', 'Se ha suscrito correctamante a:<br>'.$this->stageFull->name, 'success', 0);
           $this->dispatch('pg:eventRefresh-groupFaseTable');
           $this->user = auth()->user()->fresh();
           $this->suscribed=true;
@@ -187,12 +190,12 @@ final class GroupFaseTable extends PowerGridComponent
         } catch (\Exception $e) {
           DB::rollBack();
           Log::error('no se pudo suscribir: '.$this->user->id."\n".$e);
-          $this->dispatch('notifyalpine', '¡Noticia!', 'No se pudo suscribir a:<br>'.$this->stage->name, 'error', 0);
+          $this->dispatch('notifyalpine', '¡Noticia!', 'No se pudo suscribir a:<br>'.$this->stageFull->name, 'error', 0);
         }
 
 
       }else {
-        $this->dispatch('notifyalpine', '¡Noticia!', 'Ya se había suscrito anteriormente a:<br>'.$this->stage->name, 'warning', 0);
+        $this->dispatch('notifyalpine', '¡Noticia!', 'Ya se había suscrito anteriormente a:<br>'.$this->stageFull->name, 'warning', 0);
       }
     }
 
@@ -203,12 +206,12 @@ final class GroupFaseTable extends PowerGridComponent
 
         $query = Bet::query()
             ->where('bets.user_id', $this->user->id)
-            ->where('bets.stage_id', $this->stage->id)
+            ->where('bets.stage_id', $this->stage)
             ->join('users', 'users.id', '=', 'bets.user_id')
             ->join('games', 'games.id', '=', 'bets.game_id')
             ->join('teams as hometeams', 'hometeams.id', '=', 'games.home_team_id')  // ← Sin espacios
             ->join('teams as awayteams', 'awayteams.id', '=', 'games.away_team_id')  // ← Sin espacios
-            // ->orderBy('bets.id')
+            ->where('games.round','=',$this->round)
             ->select(
                 'bets.*',
                 'users.name as user_name',
@@ -340,7 +343,7 @@ final class GroupFaseTable extends PowerGridComponent
           }elseif ($field === 'away_score_p') {
             try {
               DB::beginTransaction();
-              $bet->away_score_p = (int)$value; 
+              $bet->away_score_p = (int)$value;
               if (!is_null($bet->home_score_p)) {
                 $bet->status=true;
               }

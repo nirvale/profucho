@@ -20,7 +20,7 @@
       <x-layouts.flexwrap >
 
 
-        <livewire:group-fase-table/>
+        <livewire:group-fase-table round=1 stage=1  />
 
       </x-layouts.flexwrap>
     </x-layouts.main>

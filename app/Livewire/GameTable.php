@@ -73,6 +73,9 @@ final class GameTable extends PowerGridComponent
             ->add('stagename',function($model){
               return $model->stage->name;
             })
+            ->add('round',function($model){
+              return $model->round;
+            })
             ->add('home_score',function($model){
                 return $model->home_score ?? 'Sin marcador';
             })
@@ -91,6 +94,9 @@ final class GameTable extends PowerGridComponent
             Column::make('Stage', 'stagename','stages.name')
                 ->sortable()
                 ->searchable(),
+            Column::make('Round', 'round')
+                ->sortable(),
+                // ->searchable(),
             Column::make('Home Team', 'hometeam','hometeams.name')
                 ->sortable()
                 ->searchable(),
@@ -243,7 +249,7 @@ final class GameTable extends PowerGridComponent
                     if ($puntos > 0) {
                         $bet->increment('score', $puntos);
                         if ($bet->user && $bet->user->profile) {
-                            $bet->user->profile->increment('score_' . $game->stage_id, $puntos);
+                            $bet->user->profile->increment('score_' . $game->round, $puntos);
                         }
                     }
 
@@ -262,7 +268,7 @@ final class GameTable extends PowerGridComponent
                             $extraPoints = ($whoWin == 3) ? 1 : 3;
                             $bet->increment('score', $extraPoints);
                             if ($bet->user && $bet->user->profile) {
-                                $bet->user->profile->increment('score_' . $game->stage_id, $extraPoints);
+                                $bet->user->profile->increment('score_' . $game->round, $extraPoints);
                             }
                         }
                     }
@@ -309,7 +315,7 @@ final class GameTable extends PowerGridComponent
                     if ($puntos > 0) {
                         $bet->increment('score', $puntos);
                         if ($bet->user && $bet->user->profile) {
-                            $bet->user->profile->increment('score_' . $game->stage_id, $puntos);
+                            $bet->user->profile->increment('score_' . $game->round, $puntos);
                         }
                     }
 
@@ -328,7 +334,7 @@ final class GameTable extends PowerGridComponent
                             $extraPoints = ($whoWin == 3) ? 1 : 3;
                             $bet->increment('score', $extraPoints);
                             if ($bet->user && $bet->user->profile) {
-                                $bet->user->profile->increment('score_' . $game->stage_id, $extraPoints);
+                                $bet->user->profile->increment('score_' . $game->round, $extraPoints);
                             }
                         }
                     }
