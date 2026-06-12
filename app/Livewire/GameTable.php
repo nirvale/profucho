@@ -264,11 +264,18 @@ final class GameTable extends PowerGridComponent
                             $pronosticWhoWin = 3;
                         }
 
+                        // if ($pronosticWhoWin == $whoWin) {
+                        //     $extraPoints = ($whoWin == 3) ? 1 : 3;
+                        //     $bet->increment('score', $extraPoints);
+                        //     if ($bet->user && $bet->user->profile) {
+                        //         $bet->user->profile->increment('score_' . $game->round, $extraPoints);
+                        //     }
+                        // }
+
                         if ($pronosticWhoWin == $whoWin) {
-                            $extraPoints = ($whoWin == 3) ? 1 : 3;
-                            $bet->increment('score', $extraPoints);
+                            $bet->increment('score', 3);  // Directo, sin ternario
                             if ($bet->user && $bet->user->profile) {
-                                $bet->user->profile->increment('score_' . $game->round, $extraPoints);
+                                $bet->user->profile->increment('score_' . $game->round, 3);
                             }
                         }
                     }
@@ -330,11 +337,18 @@ final class GameTable extends PowerGridComponent
                             $pronosticWhoWin = 3;
                         }
 
+                        // if ($pronosticWhoWin == $whoWin) {
+                        //     $extraPoints = ($whoWin == 3) ? 1 : 3;
+                        //     $bet->increment('score', $extraPoints);
+                        //     if ($bet->user && $bet->user->profile) {
+                        //         $bet->user->profile->increment('score_' . $game->round, $extraPoints);
+                        //     }
+                        // }
+
                         if ($pronosticWhoWin == $whoWin) {
-                            $extraPoints = ($whoWin == 3) ? 1 : 3;
-                            $bet->increment('score', $extraPoints);
+                            $bet->increment('score', 3);  // Directo, sin ternario
                             if ($bet->user && $bet->user->profile) {
-                                $bet->user->profile->increment('score_' . $game->round, $extraPoints);
+                                $bet->user->profile->increment('score_' . $game->round, 3);
                             }
                         }
                     }
