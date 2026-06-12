@@ -115,10 +115,34 @@ final class GameTable extends PowerGridComponent
                    hasPermission: auth()->user()?->can('Administrar operación'),
                    saveOnMouseOut: true
                   ),
-            Column::make('Yellow Cards', 'yellow_cards')
-                ->sortable(),
-            Column::make('Red cards', 'red_cards')
-                ->sortable(),
+            Column::make('Home YC', 'home_yc')
+                ->sortable()
+                ->contentClasses('text-error font-bold text-md animate-pulse')
+                ->editOnClick(
+                  hasPermission: auth()->user()?->can('Administrar operación'),
+                  saveOnMouseOut: true
+                 ),
+            Column::make('Home RC', 'home_rc')
+                ->sortable()
+                ->contentClasses('text-error font-bold text-md animate-pulse')
+                ->editOnClick(
+                  hasPermission: auth()->user()?->can('Administrar operación'),
+                  saveOnMouseOut: true
+                 ),
+            Column::make('Away YC', 'away_yc')
+                ->sortable()
+                ->contentClasses('text-error font-bold text-md animate-pulse')
+                ->editOnClick(
+                  hasPermission: auth()->user()?->can('Administrar operación'),
+                  saveOnMouseOut: true
+                 ),
+            Column::make('Away RC', 'away_rc')
+                ->sortable()
+                ->contentClasses('text-error font-bold text-md animate-pulse')
+                ->editOnClick(
+                  hasPermission: auth()->user()?->can('Administrar operación'),
+                  saveOnMouseOut: true
+                 ),
             Column::make(
                 title: __('Is Active'),
                 field: 'is_active',
@@ -130,7 +154,7 @@ final class GameTable extends PowerGridComponent
                     falseLabel: 'No'
                 )
                 ->sortable(),
-            Column::action('Action')
+
         ];
     }
 
@@ -142,20 +166,61 @@ final class GameTable extends PowerGridComponent
             $game = Game::findOrFail($id);
 
             if ($game->is_active) {
-                // Apuestas ABIERTAS → No se puede actualizar
                 $this->dispatch('notifyalpine', '¡Error!', 'No se puede actualizar el resultado mientras las apuestas estén abiertas.', 'error', 3000);
                 return;
             }
-            $maxPoints = 3;
-            $bets = Bet::where('game_id', $game->id)
-                ->whereNotNull('home_score_p')
-                ->whereNotNull('away_score_p')
-                ->where('status', true)
-                ->get();
+
+            // ==================== TARJETAS ====================
+            if ($field == 'home_yc') {
+                if ($game->home_yc > 0) {
+                  $game->hometeam->decrement('yellow_cards', $game->home_yc);
+                }
+                $game->home_yc = e($value);
+                $game->hometeam->increment('yellow_cards', (int)$value);
+                $game->save();
+            }
+
+            if ($field == 'home_rc') {
+                if ($game->home_rc > 0) {
+                  $game->hometeam->decrement('red_cards', $game->home_rc);
+                }
+                $game->home_rc = e($value);
+                $game->hometeam->increment('red_cards', (int)$value);
+                $game->save();
+            }
+
+            if ($field == 'away_yc') {
+                if ($game->away_yc > 0) {
+                  $game->awayteam->decrement('yellow_cards', $game->away_yc);
+                }
+                $game->away_yc = e($value);
+                $game->awayteam->increment('yellow_cards', (int)$value);
+                $game->save();
+            }
+
+            if ($field == 'away_rc') {
+                if ($game->away_rc > 0) {
+                  $game->awayteam->decrement('red_cards', $game->away_rc);
+                }
+                $game->away_rc = e($value);
+                $game->awayteam->increment('red_cards', (int)$value);
+                $game->save();
+            }
+
+            // ==================== DATOS COMUNES PARA PUNTUACIONES ====================
+
 
             // ==================== HOME_SCORE ====================
             if ($field == 'home_score' && is_null($game->home_score)) {
-                $game->home_score = $value;
+              $maxPoints = 3;
+              $bets = Bet::where('game_id', $game->id)
+                  ->whereNotNull('home_score_p')
+                  ->whereNotNull('away_score_p')
+                  ->where('status', true)
+                  ->get();
+
+                $safeValue = (int)$value;
+                $game->home_score = $safeValue;
                 $whoWin = null;
 
                 if (!is_null($game->away_score)) {
@@ -174,60 +239,54 @@ final class GameTable extends PowerGridComponent
 
                 foreach ($bets as $bet) {
                     // Puntos por precisión del marcador local
-                    $puntos = $maxPoints - abs($value - $bet->home_score_p);
+                    $puntos = $maxPoints - abs($safeValue - $bet->home_score_p);
                     if ($puntos > 0) {
                         $bet->increment('score', $puntos);
-                        // ✅ Corregido: increment en profile
                         if ($bet->user && $bet->user->profile) {
                             $bet->user->profile->increment('score_' . $game->stage_id, $puntos);
                         }
                     }
 
                     // Puntos por acertar el ganador
-                    $pronosticWhoWin = null;
-
                     if (!is_null($game->away_score)) {
+                        $pronosticWhoWin = null;
                         if ($bet->home_score_p > $bet->away_score_p) {
                             $pronosticWhoWin = 1;
-                            if ($pronosticWhoWin == $whoWin) {
-                                $bet->increment('score', 3);
-
-                                if ($bet->user && $bet->user->profile) {
-                                    $bet->user->profile->increment('score_' . $game->stage_id, 3);
-                                }
-                            }
                         } elseif ($bet->home_score_p < $bet->away_score_p) {
                             $pronosticWhoWin = 2;
-                            if ($pronosticWhoWin == $whoWin) {
-                                $bet->increment('score', 3);
-
-                                if ($bet->user && $bet->user->profile) {
-                                    $bet->user->profile->increment('score_' . $game->stage_id, 3);
-                                }
-                            }
                         } elseif ($bet->home_score_p == $bet->away_score_p) {
                             $pronosticWhoWin = 3;
-                            if ($pronosticWhoWin == $whoWin) {
-                                $bet->increment('score', 1);
+                        }
 
-                                if ($bet->user && $bet->user->profile) {
-                                    $bet->user->profile->increment('score_' . $game->stage_id, 1);
-                                }
+                        if ($pronosticWhoWin == $whoWin) {
+                            $extraPoints = ($whoWin == 3) ? 1 : 3;
+                            $bet->increment('score', $extraPoints);
+                            if ($bet->user && $bet->user->profile) {
+                                $bet->user->profile->increment('score_' . $game->stage_id, $extraPoints);
                             }
                         }
                     }
-                    $bet->save();
                 }
+
                 $game->save();
-                Team::where('id', $game->home_team_id)->increment('goals_scored', $value);
-                Team::where('id', $game->home_team_id)->increment('goals_difference', $value);
-                Team::where('id', $game->away_team_id)->increment('goals_conceded', $value);
-                Team::where('id', $game->away_team_id)->decrement('goals_difference', $value);
+
+                // Estadísticas de goles
+                Team::where('id', $game->home_team_id)->increment('goals_scored', $safeValue);
+                Team::where('id', $game->home_team_id)->increment('goals_difference', $safeValue);
+                Team::where('id', $game->away_team_id)->increment('goals_conceded', $safeValue);
+                Team::where('id', $game->away_team_id)->decrement('goals_difference', $safeValue);
             }
 
             // ==================== AWAY_SCORE ====================
             if ($field == 'away_score' && is_null($game->away_score)) {
-                $game->away_score = $value;
+              $maxPoints = 3;
+              $bets = Bet::where('game_id', $game->id)
+                  ->whereNotNull('home_score_p')
+                  ->whereNotNull('away_score_p')
+                  ->where('status', true)
+                  ->get();
+                $safeValue = (int)$value;
+                $game->away_score = $safeValue;
                 $whoWin = null;
 
                 if (!is_null($game->home_score)) {
@@ -246,56 +305,42 @@ final class GameTable extends PowerGridComponent
 
                 foreach ($bets as $bet) {
                     // Puntos por precisión del marcador visitante
-                    $puntos = $maxPoints - abs($value - $bet->away_score_p);
+                    $puntos = $maxPoints - abs($safeValue - $bet->away_score_p);
                     if ($puntos > 0) {
                         $bet->increment('score', $puntos);
-
                         if ($bet->user && $bet->user->profile) {
                             $bet->user->profile->increment('score_' . $game->stage_id, $puntos);
                         }
                     }
 
                     // Puntos por acertar el ganador
-                    $pronosticWhoWin = null;
-
                     if (!is_null($game->home_score)) {
+                        $pronosticWhoWin = null;
                         if ($bet->home_score_p > $bet->away_score_p) {
                             $pronosticWhoWin = 1;
-                            if ($pronosticWhoWin == $whoWin) {
-                                $bet->increment('score', 3);
-
-                                if ($bet->user && $bet->user->profile) {
-                                    $bet->user->profile->increment('score_' . $game->stage_id, 3);
-                                }
-                            }
                         } elseif ($bet->home_score_p < $bet->away_score_p) {
                             $pronosticWhoWin = 2;
-                            if ($pronosticWhoWin == $whoWin) {
-                                $bet->increment('score', 3);
-
-                                if ($bet->user && $bet->user->profile) {
-                                    $bet->user->profile->increment('score_' . $game->stage_id, 3);
-                                }
-                            }
                         } elseif ($bet->home_score_p == $bet->away_score_p) {
                             $pronosticWhoWin = 3;
-                            if ($pronosticWhoWin == $whoWin) {
-                                $bet->increment('score', 1);
+                        }
 
-                                if ($bet->user && $bet->user->profile) {
-                                    $bet->user->profile->increment('score_' . $game->stage_id, 1);
-                                }
+                        if ($pronosticWhoWin == $whoWin) {
+                            $extraPoints = ($whoWin == 3) ? 1 : 3;
+                            $bet->increment('score', $extraPoints);
+                            if ($bet->user && $bet->user->profile) {
+                                $bet->user->profile->increment('score_' . $game->stage_id, $extraPoints);
                             }
                         }
                     }
-                    $bet->save();
                 }
-                $game->save();
-                Team::where('id', $game->away_team_id)->increment('goals_scored', $value);
-                Team::where('id', $game->away_team_id)->increment('goals_difference', $value);
-                Team::where('id', $game->home_team_id)->increment('goals_conceded', $value);
-                Team::where('id', $game->home_team_id)->decrement('goals_difference', $value);
 
+                $game->save();
+
+                // Estadísticas de goles
+                Team::where('id', $game->away_team_id)->increment('goals_scored', $safeValue);
+                Team::where('id', $game->away_team_id)->increment('goals_difference', $safeValue);
+                Team::where('id', $game->home_team_id)->increment('goals_conceded', $safeValue);
+                Team::where('id', $game->home_team_id)->decrement('goals_difference', $safeValue);
             }
 
             DB::commit();
@@ -322,10 +367,10 @@ final class GameTable extends PowerGridComponent
 
             // $bets= Bet::where('game_id','=',$game->id)->get();
 
-            if ($field == 'is_active' && $game->is_active != $value) {
+            if ($field == 'is_active' && $game->is_active != e($value)) {
 
-                Bet::where('game_id', $game->id)->update(['status' => !$value]);
-                $game->is_active = $value;
+                Bet::where('game_id', $game->id)->update(['status' => !e($value)]);
+                $game->is_active = e($value);
                 $game->save();
             }
             DB::commit();
@@ -358,16 +403,16 @@ final class GameTable extends PowerGridComponent
         $this->js('alert('.$rowId.')');
     }
 
-    public function actions(Game $row): array
-    {
-        return [
-            Button::add('edit')
-                ->slot('Edit: '.$row->id)
-                ->id()
-                ->class('pg-btn-white dark:ring-pg-primary-600 dark:border-pg-primary-600 dark:hover:bg-pg-primary-700 dark:ring-offset-pg-primary-800 dark:text-pg-primary-300 dark:bg-pg-primary-700')
-                ->dispatch('edit', ['rowId' => $row->id])
-        ];
-    }
+    // public function actions(Game $row): array
+    // {
+    //     return [
+    //         Button::add('edit')
+    //             ->slot('Edit: '.$row->id)
+    //             ->id()
+    //             ->class('pg-btn-white dark:ring-pg-primary-600 dark:border-pg-primary-600 dark:hover:bg-pg-primary-700 dark:ring-offset-pg-primary-800 dark:text-pg-primary-300 dark:bg-pg-primary-700')
+    //             ->dispatch('edit', ['rowId' => $row->id])
+    //     ];
+    // }
 
     /*
     public function actionRules($row): array

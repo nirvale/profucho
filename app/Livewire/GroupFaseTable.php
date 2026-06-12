@@ -326,7 +326,7 @@ final class GroupFaseTable extends PowerGridComponent
           if ($field === 'home_score_p') {
             try {
               DB::beginTransaction();
-              $bet->home_score_p=$value;
+              $bet->home_score_p = (int)$value;
               if (!is_null($bet->away_score_p)) {
                 $bet->status=true;
               }
@@ -340,7 +340,7 @@ final class GroupFaseTable extends PowerGridComponent
           }elseif ($field === 'away_score_p') {
             try {
               DB::beginTransaction();
-              $bet->away_score_p=$value;
+              $bet->away_score_p = (int)$value; 
               if (!is_null($bet->home_score_p)) {
                 $bet->status=true;
               }
