@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             ProfileSeeder::class,
             VenueSeeder::class,
             TeamSeeder::class,
+            GroupSeeder::class,
             StageSeeder::class,
             GameSeeder::class,
             AmountSeeder::class,

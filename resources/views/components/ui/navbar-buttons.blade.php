@@ -25,7 +25,7 @@
           {{-- <li><a>Navbar Item 2</a></li> --}}
           @if (Route::has('login'))
                   @auth
-                      {{-- <li><a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'menu-active' : '' }}">Dashboard</a></li> --}}
+                      <li><a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'menu-active' : '' }}">Dashboard</a></li>
                       <li><a href="{{ route('fases.grupos') }}" class="{{ request()->routeIs('fases.grupos') ? 'menu-active' : '' }}">1 Fase</a></li>
                       <livewire:auth.user-menu/>
                   @else
