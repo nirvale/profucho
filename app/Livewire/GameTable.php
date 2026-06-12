@@ -219,6 +219,10 @@ final class GameTable extends PowerGridComponent
                     $bet->save();
                 }
                 $game->save();
+                Team::where('id', $game->home_team_id)->increment('goals_scored', $value);
+                Team::where('id', $game->home_team_id)->increment('goals_difference', $value);
+                Team::where('id', $game->away_team_id)->increment('goals_conceded', $value);
+                Team::where('id', $game->away_team_id)->decrement('goals_difference', $value);
             }
 
             // ==================== AWAY_SCORE ====================
@@ -287,6 +291,11 @@ final class GameTable extends PowerGridComponent
                     $bet->save();
                 }
                 $game->save();
+                Team::where('id', $game->away_team_id)->increment('goals_scored', $value);
+                Team::where('id', $game->away_team_id)->increment('goals_difference', $value);
+                Team::where('id', $game->home_team_id)->increment('goals_conceded', $value);
+                Team::where('id', $game->home_team_id)->decrement('goals_difference', $value);
+
             }
 
             DB::commit();
