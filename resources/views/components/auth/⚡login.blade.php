@@ -192,13 +192,12 @@ new class extends Component
     <x-ui.auth.login.login-button />
     <x-ui.auth.login.remember />
 
-    {{-- ✅ Script mejorado con manejo de errores y estado --}}
     <script>
     document.addEventListener('alpine:init', () => {
         Alpine.data('turnstileHandler', () => ({
             token: null,
             widgetId: null,
-            container: null, // ✅ Guardar referencia al contenedor
+            container: null, //  Guardar referencia al contenedor
 
             init() {
                 this.container = document.querySelector('#turnstile-container');
@@ -210,38 +209,39 @@ new class extends Component
 
                 // Callbacks de Turnstile
                 window.onSuccess = (token) => {
-                    console.log('✅ Turnstile completado');
+                    // console.log(' Turnstile completado');
                     this.token = token;
                     this.$wire.set('turnstileToken', token);
                 };
 
                 window.onError = (errorCode) => {
-                    console.error('❌ Turnstile Error:', errorCode);
+                    // console.error(' Turnstile Error:', errorCode);
                     this.$dispatch('notifyalpine', 'Error',
                         'Error en la verificación: ' + errorCode,
                         'error', 3000);
                 };
 
                 window.onExpired = () => {
-                    console.warn('⚠️ Turnstile expirado');
+                    // console.warn(' Turnstile expirado');
                     this.token = null;
                     this.$wire.set('turnstileToken', null);
                 };
 
                 window.onTimeout = () => {
-                    console.warn('⏱️ Turnstile timeout');
+                    console.warn(' Turnstile timeout');
                 };
 
                 // Escuchar evento de recarga
                 this.$wire.on('reload-turnstile', () => {
-                    console.log('🔄 Recargando Turnstile...');
+                    // console.log(' Recargando Turnstile...');
                     this.reloadTurnstile();
                 });
             },
 
             renderTurnstile() {
+                const isMobile = window.innerWidth < 480;
                 if (!this.container || typeof turnstile === 'undefined') {
-                    console.warn('⚠️ Contenedor o Turnstile no disponible');
+                    console.warn(' Contenedor o Turnstile no disponible');
                     return;
                 }
 
@@ -249,7 +249,7 @@ new class extends Component
                 this.cleanupTurnstile();
 
                 turnstile.ready(() => {
-                    console.log('🔄 Turnstile listo, renderizando...');
+                    // console.log(' Turnstile listo, renderizando...');
 
                     // ✅ Crear un nuevo div para Turnstile
                     const div = document.createElement('div');
@@ -263,14 +263,14 @@ new class extends Component
                     this.widgetId = turnstile.render(div, {
                         sitekey: '{{ config("app.turnstile.site_key") }}',
                         theme: 'light',
-                        size: 'flexible',
+                        size: isMobile ? 'normal' : 'flexible',
                         callback: (token) => {
-                            console.log('✅ Challenge Success:', token);
+                            // console.log(' Challenge Success:', token);
                             this.token = token;
                             this.$wire.set('turnstileToken', token);
                         },
                         'error-callback': (errorCode) => {
-                            console.error('❌ Error:', errorCode);
+                            console.error(' Error:', errorCode);
                             this.$dispatch('notifyalpine', 'Error',
                                 'Error en la verificación: ' + errorCode,
                                 'error', 3000);
@@ -285,7 +285,7 @@ new class extends Component
                         }
                     });
 
-                    console.log('✅ Turnstile renderizado, widgetId:', this.widgetId);
+                    // console.log(' Turnstile renderizado, widgetId:', this.widgetId);
                 });
             },
 
@@ -322,27 +322,13 @@ new class extends Component
             }
         }));
     });
-        // turnstile.ready(function () {
-        //   widgetId=turnstile.render('#turnstilerender', {
-        //     sitekey: "{{ config('app.turnstile.site_key') }}",
-        //     theme: 'light',
-        //     size:'flexible',
-        //     callback: function (token) {
-        //       console.log('Challenge Success ${token}' );
-        //       // window.Livewire.dispatch('registerShow',{
-        //       //             turnstileToken:token,
-        //       //           });
-        //     },
-        //
-        //   });
-        // });
 
     </script>
 
     {{-- ✅ Contenedor con Alpine --}}
     <div x-data="turnstileHandler" >
         <!-- ✅ Contenedor vacío - Turnstile se renderiza aquí -->
-        <div id="turnstile-container" wire:ignore></div>
+        <div id="turnstile-container" wire:ignore class="flex justify-center items-center w-full"></div>
         <x-ui.forms.input-error for="turnstileToken" />
 
 

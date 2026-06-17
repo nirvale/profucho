@@ -16,27 +16,6 @@
         })();
     </script>
     @if (Route::Has('login'))
-      {{-- <script>
-          // Definir el callback de carga de Turnstile
-          window.onloadTurnstileCallback = function() {
-              // Turnstile está completamente cargado
-              window.onSuccess = function(token) {
-                  console.log('Challenge Success:', token);
-              }
-
-              window.onError = function(errorCode) {
-                  console.log('Challenge Error:', errorCode);
-              }
-
-              window.onExpired = function() {
-                  console.log('Token expired');
-              }
-
-              window.onTimeout = function() {
-                  console.log('Challenge timed out');
-              }
-          };
-      </script> --}}
       <script src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
     @endif
     <!-- Styles / Scripts -->

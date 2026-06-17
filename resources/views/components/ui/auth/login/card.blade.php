@@ -26,7 +26,7 @@
                 <x-ui.logo-primary-responsive class="w-[300px] -my-10"  />
 
                 <!-- Formulario -->
-                <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-full border p-4">
+                <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-full border p-2">
                   <legend class="fieldset-legend">{{$title}}</legend>
                     {{$slot}}
                 </fieldset>
