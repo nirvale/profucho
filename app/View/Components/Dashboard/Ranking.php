@@ -15,7 +15,7 @@ class Ranking extends Component
      */
     public function __construct()
     {
-        $this->profiles=Profile::whereNotIn('id', [1,3,4])->orderBy('score_1','desc')->take(10)->get();
+        $this->profiles=Profile::whereNotIn('id', [1,3,4])->where('score_1','>',0)->orderBy('score_1','desc')->take(10)->get();
         // dd($this->profiles);
     }
 
