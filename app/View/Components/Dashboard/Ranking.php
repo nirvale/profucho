@@ -10,20 +10,44 @@ use App\Models\Intranet\Profile;
 class Ranking extends Component
 {
     public $profiles;
+    public $stageId;
+    public $roundId;
+    public $title;
+    public $subtitle;
     /**
      * Create a new component instance.
      */
-    public function __construct()
-    {
-        $this->profiles=Profile::whereNotIn('id', [1,3,4])->where('score_1','>',0)->orderBy('score_1','desc')->take(10)->get();
-        // dd($this->profiles);
-    }
+     public function __construct($stageId, $roundId, $title, $subtitle)
+     {
+         $this->stageId = $stageId;
+         $this->roundId = $roundId;
+         $this->title = $title;
+         $this->subtitle = $subtitle;
+         // No hagas queries aquí
+     }
+
+     public function render()
+     {
+         // Construye el nombre de la columna dinámicamente
+         $column = 'score_' . $this->stageId;
+
+         // Ejecuta la query y pasa la variable a la vista
+         $this->profiles = Profile::whereNotIn('id', [1, 3, 4])
+             ->where($column, '>', 0)
+             ->orderBy($column, 'desc')
+             ->take(10)
+             ->get();
+
+         return view('components.dashboard.ranking', [
+             // 'profiles' => $profiles
+         ]);
+     }
 
     /**
      * Get the view / contents that represent the component.
      */
-    public function render(): View|Closure|string
-    {
-        return view('components.dashboard.ranking');
-    }
+    // public function render(): View|Closure|string
+    // {
+    //
+    // }
 }

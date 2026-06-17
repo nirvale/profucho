@@ -1,7 +1,11 @@
+@props(['stage_id','round_id','title','subtitle'])
 <div class="">
-  <ul class="list bg-base-100 rounded-box shadow-md">
-
-    <li class="p-4 pb-2 text-lg opacity-70 text-primary tracking-wide w-auto text-center">Ranking al {{ date('Y-m-d') }}</li>
+  <div class="p-2 rounded-t-lg bg-primary text-primary-content w-auto text-center tracking-wide shadow-md flex flex-col text-md font-bold">
+    <span class="">Ranking al {{ date('Y-m-d') }}</span>
+    <span class="">{{__($title)}}</span>
+    <span class="">{{__($subtitle)}}</span>
+  </div>
+  <ul class="list bg-base-100 rounded-box rounded-t-none shadow-md">
     @foreach ($profiles as $profile)
         <li class="list-row">
           <div class="text-4xl font-thin opacity-70 tabular-nums text-secondary animate-pulse">{{ $loop->iteration }}</div>
