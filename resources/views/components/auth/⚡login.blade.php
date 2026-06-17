@@ -326,7 +326,7 @@ new class extends Component
     </script>
 
     {{-- ✅ Contenedor con Alpine --}}
-    <div x-data="turnstileHandler" >
+    <div x-data="turnstileHandler" class="text-center" >
         <!-- ✅ Contenedor vacío - Turnstile se renderiza aquí -->
         <div id="turnstile-container" wire:ignore class="flex justify-center items-center w-full"></div>
         <x-ui.forms.input-error for="turnstileToken" />
