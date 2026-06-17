@@ -113,7 +113,7 @@ final class GroupFaseTable extends PowerGridComponent
                     'x-data' => 'subTrackerAlive',
                     // 'x-show'=>'showNewButton',
                     // 'x-init' => "showNewButton = !{$this->user->profile->{"enabled_{$this->round}"}}",
-                    'x-on:click' => 'switchShowNewButton; $dispatch(\'suscribe\');',
+                    'x-on:click' => 'switchShowNewButton;',
                     ':disabled' => '!showNewButton',
                     '@shownewbutton.window' => 'switchShowNewButton',
                     // 'x-transition:enter'=>'transition ease-out duration-100',
@@ -125,7 +125,7 @@ final class GroupFaseTable extends PowerGridComponent
                     // 'wire:loading.attr'=>'disabled',
                     // 'wire:target'=>'newUser',
                     // 'wire:click' => 'newUser',
-                ])
+                ])->dispatch('suscribe',['stage'=>$this->stage,'round'=>$this->round])
                 ->id('play-button'),
             Button::add('badge')
                 ->slot(view('components.ui.forms.badge', [
@@ -161,8 +161,11 @@ final class GroupFaseTable extends PowerGridComponent
     }
 
     #[On('suscribe')]
-    public function suscribe(){
+    public function suscribe($stage,$round){
 
+      if (!$stage || !$round || $stage != $this->stage || $round != $this->round) {
+          return; // No es para este componente
+      }
 
       if (!$this->user->profile->{"enabled_{$this->round}"}) {
         try {
@@ -182,7 +185,7 @@ final class GroupFaseTable extends PowerGridComponent
           $this->init=true;
           $this->user->push();
           DB::commit();
-          $this->dispatch('notifyalpine', '¡Se ha suscrito con éxito!', 'Se ha suscrito correctamante a:<br>'.$this->stageFull->name, 'success', 0);
+          $this->dispatch('notifyalpine', '¡Se ha suscrito con éxito!', 'Se ha suscrito correctamante a:<br>'.$this->stageFull->name.': ronda '.$this->round, 'success', 0);
           $this->dispatch('pg:eventRefresh-groupFaseTable');
           $this->user = auth()->user()->fresh();
           $this->suscribed=true;
