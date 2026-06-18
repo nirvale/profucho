@@ -1,6 +1,6 @@
 @props([])
 <div class="">
-  <div class="p-2 rounded-t-lg bg-primary text-primary-content w-auto text-center tracking-wide shadow-md flex flex-col text-md font-bold">
+  <div class="p-2 rounded-t-lg {{$roundId==1 ? 'bg-primary' : ( $roundId ==2 ? 'bg-neutral' : 'bg-secondary')}} text-primary-content w-auto text-center tracking-wide shadow-md flex flex-col text-md font-bold">
     <span class="">Ranking al {{ date('Y-m-d') }}</span>
     <span class="">{{__($title)}}</span>
     <span class="">{{__($subtitle)}}</span>
