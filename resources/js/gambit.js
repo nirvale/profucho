@@ -52,7 +52,7 @@ document.addEventListener('focus', function(e) {
 document.addEventListener('DOMContentLoaded', () => {
     const hijo = document.getElementById('play-button1');
     if (hijo) {
-        hijo.parentElement.classList.add('flex', 'flex-col', 'items-center','gap-2', 'mb-2','lg:flex-row', 'gl:items-left');
+        hijo.parentElement.classList.add('flex', 'flex-col', 'items-center','gap-2', 'mb-2','mt-2','lg:flex-row', 'gl:items-left');
     } else {
         // console.error("No se encontró el elemento con id='play-button1'");
     }
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
     const hijo = document.getElementById('play-button2');
     if (hijo) {
-        hijo.parentElement.classList.add('flex', 'flex-col', 'items-center','gap-2', 'mb-2','lg:flex-row', 'gl:items-left');
+        hijo.parentElement.classList.add('flex', 'flex-col', 'items-center','gap-2', 'mb-2','mt-2','lg:flex-row', 'gl:items-left');
     } else {
         // console.error("No se encontró el elemento con id='play-button2'");
     }
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
     const hijo = document.getElementById('play-button3');
     if (hijo) {
-        hijo.parentElement.classList.add('flex', 'flex-col', 'items-center','gap-2', 'mb-2','lg:flex-row', 'gl:items-left');
+        hijo.parentElement.classList.add('flex', 'flex-col', 'items-center','gap-2', 'mb-2','mt-2','lg:flex-row', 'gl:items-left');
     } else {
         // console.error("No se encontró el elemento con id='play-button3'");
     }
