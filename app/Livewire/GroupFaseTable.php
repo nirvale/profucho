@@ -37,6 +37,7 @@ final class GroupFaseTable extends PowerGridComponent
     public $amount;
     public $home_score_p;
     public $away_score_p;
+    public $suscDisabled;
 
 
     public function mount(): void
@@ -166,6 +167,11 @@ final class GroupFaseTable extends PowerGridComponent
       if (!$stage || !$round || $stage != $this->stage || $round != $this->round) {
           return; // No es para este componente
       }
+      if ($this->suscDisabled) {
+        $this->dispatch('notifyalpine', '¡Ya es tarde papu!', 'Se ha cerrado esta ronda:<br> ronda '.$this->round, 'error', 0);
+        return;
+      }
+
 
       if (!$this->user->profile->{"enabled_{$this->round}"}) {
         try {
