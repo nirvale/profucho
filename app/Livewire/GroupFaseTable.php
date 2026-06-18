@@ -187,7 +187,7 @@ final class GroupFaseTable extends PowerGridComponent
               'amount_id' => $this->amount->id,
             ]);
           }
-          $this->user->profile->init_1=true;
+          $this->user->profile->{"init_{$this->round}"}=true;
           $this->init=true;
           $this->user->push();
           DB::commit();
@@ -325,7 +325,16 @@ final class GroupFaseTable extends PowerGridComponent
     }
     public function onUpdatedEditable(string|int $id, string $field, string $value): void
     {
+
         $bet=Bet::findOrFail($id);
+        if (!$this->stage || !$this->round || $bet->game->stage_id != $this->stage || $bet->game->round != $this->round) {
+            return; // No es para este componente
+        }
+        if ($this->suscDisabled) {
+          $this->dispatch('notifyalpine', '¡Ya es tarde papu!', 'Se ha cerrado esta ronda:<br> ronda '.$this->round, 'error', 0);
+          return;
+        }
+
         if ($bet->status==true) {
           $this->dispatch('notifyalpine', '¡Error!', 'Ya no es posbible modificar su pronóstico:<br>', 'error', 3000);
         }else {

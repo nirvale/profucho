@@ -29,7 +29,7 @@ class Ranking extends Component
      public function render()
      {
          // Construye el nombre de la columna dinámicamente
-         $column = 'score_' . $this->stageId;
+         $column = 'score_' . $this->roundId;
 
          // Ejecuta la query y pasa la variable a la vista
          $this->profiles = Profile::whereNotIn('id', [1, 3, 4])
