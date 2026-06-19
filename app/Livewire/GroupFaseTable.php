@@ -46,7 +46,7 @@ final class GroupFaseTable extends PowerGridComponent
         // dd($this->round);
         $this->user = auth()->user();
         $this->suscribed=$this->user->profile->{"enabled_{$this->round}"};
-        $this->init=$this->user->profile->init_1;
+        $this->init=$this->user->profile->{"init_{$this->round}"};
         $this->stageFull = Stage::findOrFail($this->stage);
         $this->amount = Amount::where('is_active','=',1)->where('stage_id','=',$this->stage)->first();
         // dd($this->user->profile);
