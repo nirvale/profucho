@@ -14,7 +14,7 @@
           {{__('Instructions')}}
         </x-slot:>
         <x-slot:title2>
-          {{  Auth::user()->name}}
+          {{-- {{  Auth::user()->name}} --}}
         </x-slot:title2>
       </x-layouts.main-header>
       <x-layouts.flexwrap >
