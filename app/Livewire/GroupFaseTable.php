@@ -312,10 +312,12 @@ final class GroupFaseTable extends PowerGridComponent
                  saveOnMouseOut: true
 
                ),
-          Column::make(__('User Score'), 'userscore','bets.score')
+          Column::make(__('Score'), 'userscore','bets.score')
               ->sortable()
               ->contentClasses('text-success font-bold' )
               ->searchable()
+              ->headerAttribute('w-8')
+              ->bodyAttribute('w-8')
               ->withSum('Score total', header: true, footer: false),
           // Column::make(__('Estatus'), 'status','bets.status')
           //     ->sortable()
@@ -324,7 +326,9 @@ final class GroupFaseTable extends PowerGridComponent
               // title: __('Status'),
               // field: 'status',
 
-          )
+            )
+              ->headerAttribute('w-8')
+              ->bodyAttribute('w-8')
               ->toggleable(
                   hasPermission: auth()->user()?->can('Jugar'),
                   trueLabel: 'Yes',
