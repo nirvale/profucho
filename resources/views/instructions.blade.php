@@ -91,8 +91,8 @@
   <input type="radio" name="my_tabs_3" class="tab" aria-label="{{__('Edit')}}" />
   <div class="tab-content bg-base-100 border-base-300 p-6 text-md text-base-content font-medium">
     <ul>
-      <li>* Para editar un marcador pronosticado solo haga click en el candado rojo. </li>
-      <li>* Si el candado está verde usted puede editar libremente.</li>
+      <li>* Para editar un marcador pronosticado solo haz click en el boton gris de la sección "Editable", tu marcador para ese partido se reiniciará </li>
+      <li>* Si el botón está verde puedes editar libremente.</li>
       <li>* La edición se cierra 5 minutos antes de la hora programada del partido.</li>
       <li>* No olvides marcar su partido como no editable (botón en gris), si queda con la leyenda "sin marcador", no puede generar puntos, no se asume que es cero...</li>
     </ul>
