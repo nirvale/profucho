@@ -43,7 +43,6 @@ final class GroupFaseTable extends PowerGridComponent
     public function mount(): void
     {
        parent::mount();
-        // dd($this->round);
         $this->user = auth()->user();
         $this->suscribed=$this->user->profile->{"enabled_{$this->round}"};
         $this->init=$this->user->profile->{"init_{$this->round}"};
@@ -64,7 +63,7 @@ final class GroupFaseTable extends PowerGridComponent
             PowerGrid::header()
                 ->showSearchInput(),
             PowerGrid::responsive()
-                ->fixedColumns('name', 'actions'),
+                ->fixedColumns('id','games.date','bets.score'),
             PowerGrid::footer()
                 ->showPerPage(perPage: 50, perPageValues: [0, 50, 100, 500])
                 ->showRecordCount(),
@@ -265,13 +264,16 @@ final class GroupFaseTable extends PowerGridComponent
             ->add('userscore',function($model){
               return $model->score;
             })
-            ->add('status',function($model){
-              if ($model->status) {
-                return '<svg xmlns="http://www.w3.org/2000/svg" class="text-error" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="M4 22V8h3V6q0-2.075 1.463-3.537T12 1t3.538 1.463T17 6v2h3v14zm8-5q.825 0 1.413-.587T14 15t-.587-1.412T12 13t-1.412.588T10 15t.588 1.413T12 17M9 8h6V6q0-1.25-.875-2.125T12 3t-2.125.875T9 6z"/></svg>';
-              }else {
-                return '<svg xmlns="http://www.w3.org/2000/svg" class="text-success" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="M12 17q.825 0 1.413-.587T14 15t-.587-1.412T12 13t-1.412.588T10 15t.588 1.413T12 17m-8 5V8h9V6q0-2.075 1.463-3.537T18 1t3.538 1.463T23 6h-2q0-1.25-.875-2.125T18 3t-2.125.875T15 6v2h5v14z"/></svg>';
-              }
-
+            // ->add('status',function($model){
+            //   if ($model->status) {
+            //     return '<svg xmlns="http://www.w3.org/2000/svg" class="text-error" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="M4 22V8h3V6q0-2.075 1.463-3.537T12 1t3.538 1.463T17 6v2h3v14zm8-5q.825 0 1.413-.587T14 15t-.587-1.412T12 13t-1.412.588T10 15t.588 1.413T12 17M9 8h6V6q0-1.25-.875-2.125T12 3t-2.125.875T9 6z"/></svg>';
+            //   }else {
+            //     return '<svg xmlns="http://www.w3.org/2000/svg" class="text-success" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="M12 17q.825 0 1.413-.587T14 15t-.587-1.412T12 13t-1.412.588T10 15t.588 1.413T12 17m-8 5V8h9V6q0-2.075 1.463-3.537T18 1t3.538 1.463T23 6h-2q0-1.25-.875-2.125T18 3t-2.125.875T15 6v2h5v14z"/></svg>';
+            //   }
+            //
+            // })
+            ->add('status_reverse', function($model){
+              return !$model->status;
             })
             ;
     }
@@ -315,14 +317,97 @@ final class GroupFaseTable extends PowerGridComponent
               ->contentClasses('text-success font-bold' )
               ->searchable()
               ->withSum('Score total', header: true, footer: false),
-          Column::make(__('Estatus'), 'status','bets.status')
-              ->sortable()
-              ->searchable(),
+          // Column::make(__('Estatus'), 'status','bets.status')
+          //     ->sortable()
+          //     ->searchable(),
+          Column::make( __('Editable'),'status_reverse','bets.status'
+              // title: __('Status'),
+              // field: 'status',
+
+          )
+              ->toggleable(
+                  hasPermission: auth()->user()?->can('Jugar'),
+                  trueLabel: 'Yes',
+                  falseLabel: 'No'
+              )
+              ->sortable(),
 
 
             // Column::action('Action')
         ];
     }
+
+    public function onUpdatedToggleable(string|int $id, string $field, string $value): void
+    {
+
+        $this->authorize('Jugar');
+
+        try {
+
+
+            DB::beginTransaction();
+
+            $bet = Bet::findOrFail($id);
+            $nuevoValor=null;
+            if (!$this->stage || !$this->round || $bet->game->stage_id != $this->stage || $bet->game->round != $this->round) {
+
+              DB::rollback();
+                return; // No es para este componente
+            }
+
+
+            Log::info('ejecutanto ronda:'.$this->round);
+            if ($this->suscDisabled) {
+              DB::rollback();
+              $this->dispatch('notifyalpine', '¡Ya es tarde papu!', 'Se ha cerrado esta ronda:<br> ronda '.$this->round, 'error', 0);
+              return;
+            }
+
+            if ($bet->game->is_active==0) {
+              DB::rollback();
+              $this->dispatch('notifyalpine', '¡Ya es tarde papu!', 'El partido ya se cerró' , 'error', 0);
+              return;
+            }
+
+            if ($field==='status_reverse') {
+              $field='status';
+              $nuevoValor = (int) !$value;
+              // ✅ USAR save() como en onUpdatedEditable
+              $bet->{$field} = $nuevoValor;
+              if ($nuevoValor===0) {
+                $bet->home_score_p=null;
+                $bet->away_score_p=null;
+              }elseif ($nuevoValor===1) {
+                if (  $bet->home_score_p===null && $bet->away_score_p===null ) {
+                  $bet->home_score_p=0;
+                  $bet->away_score_p=0;
+                }elseif ($bet->away_score_p===null) {
+                  $bet->away_score_p=0;
+                }elseif ($bet->home_score_p===null) {
+                  $bet->home_score_p=0;
+                }
+              }
+
+              $bet->push();  // ← Esto es lo que faltaba
+          }
+
+            // $bet->save();
+            DB::commit();
+            $this->dispatch('notifyalpine', '¡Éxito!', 'Se activó/desactivó la edición del pronóstico:<br>'.$id, 'success', 3000);
+            // if (  $nuevoValor===0 ) {
+            //   $this->skipRender();
+            // }
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            Log::info('hice rollBack: '.$id."\n");
+        }
+        //
+        // User::query()->find($id)->update([
+        //     $field => e($value),
+        // ]);
+    }
+
     public function onUpdatedEditable(string|int $id, string $field, string $value): void
     {
 
@@ -350,6 +435,7 @@ final class GroupFaseTable extends PowerGridComponent
               $bet->home_score_p = (int)$value;
               if (!is_null($bet->away_score_p)) {
                 $bet->status=true;
+                $this->dispatch('notifyalpine', '¡Éxito!', 'Se desactivó la edición del pronóstico:<br>'.$id, 'success', 3000);
               }
               $bet->save();
               DB::commit();
@@ -364,6 +450,7 @@ final class GroupFaseTable extends PowerGridComponent
               $bet->away_score_p = (int)$value;
               if (!is_null($bet->home_score_p)) {
                 $bet->status=true;
+                $this->dispatch('notifyalpine', '¡Éxito!', 'Se desactivó la edición del pronóstico:<br>'.$id, 'success', 3000);
               }
               $bet->save();
               DB::commit();

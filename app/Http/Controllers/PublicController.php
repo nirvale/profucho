@@ -17,4 +17,10 @@ class PublicController extends Controller
     // return view('auth.login', $this->getLogoDataForView());
     return view('auth.register');
   }
+
+  public function instructions()
+  {
+    // return view('auth.login', $this->getLogoDataForView());
+    return view('instructions');
+  }
 }

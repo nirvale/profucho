@@ -10,6 +10,7 @@ Route::get('/', function () {
 // Auth
 Route::get('/login', [PublicController::class, 'login'])->name('login');
 Route::get('/register', [PublicController::class, 'register'])->name('register');
+Route::get('/instructions', [PublicController::class, 'instructions'])->name('instructions');
 
 Route::prefix('intranet')
     ->middleware(['auth'])

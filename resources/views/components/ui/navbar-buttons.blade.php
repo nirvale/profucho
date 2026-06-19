@@ -21,6 +21,7 @@
         <ul class="menu menu-horizontal items-center">
           <!-- Navbar menu content here -->
           <li><a href="{{ route('welcome') }}" >Home</a></li>
+          <li><a href="{{ route('instructions') }}" >{{__('Instructions')}}</a></li>
           {{-- <li><a href="{{ route('welcome') }}" class="{{ request()->routeIs('welcome') ? 'menu-active' : '' }}" >SARE</a></li> --}}
           {{-- <li><a>Navbar Item 2</a></li> --}}
           @if (Route::has('login'))

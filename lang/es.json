@@ -31,5 +31,9 @@
     "Register":"Registrar",
     "First round":"Primera Ronda",
     "Second round":"Segunda Ronda",
-    "Round":"Ronda"
+    "Round":"Ronda",
+    "Instructions":"Instrucciones",
+    "Score":"Puntaje",
+    "Fill":"Llenado",
+    "Edit":"Editar"
 }

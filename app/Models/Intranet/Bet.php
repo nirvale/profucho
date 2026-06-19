@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\Guarded;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\User;
 
-#[Guarded([''])]
+#[Guarded(['id'])]
 class Bet extends Model
 {
     /** @use HasFactory<\Database\Factories\Intranet\BetFactory> */
