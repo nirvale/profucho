@@ -15,7 +15,7 @@
             }
         })();
     </script>
-    @if (Route::Has('login'))
+    @if (Route::Is('login'))
       <script src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
     @endif
     <!-- Styles / Scripts -->

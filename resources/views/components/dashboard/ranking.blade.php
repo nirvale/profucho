@@ -11,7 +11,7 @@
           <div class="text-4xl font-thin opacity-70 tabular-nums text-secondary animate-pulse">{{ $loop->iteration }}</div>
           <div><img class="size-10 rounded-box" src="{{route('avatar.displayImage',$profile->user->id.'-200x200.jpg')}}"/></div>
           <div class="list-col-grow">
-            <div class="text-md text-primary font-bold">{{$profile->user->name}}</div>
+            <div class="text-md text-primary font-bold">{{mb_strtoupper($profile->user->name)}}</div>
             <div class="text-lg uppercase font-semibold opacity-60 text-secondary"><span class="text-sm text-primary">Puntos: </span>{{' '.$profile->{'score_' . $roundId} }}</div>
           </div>
           <button class="btn btn-square btn-ghost">

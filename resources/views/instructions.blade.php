@@ -14,7 +14,7 @@
           {{__('Instructions')}}
         </x-slot:>
         <x-slot:title2>
-          {{-- {{  Auth::user()->name}} --}}
+          {{  Auth::user()->name ?? 'Invitado' }}
         </x-slot:title2>
       </x-layouts.main-header>
       <x-layouts.flexwrap >
@@ -81,7 +81,7 @@
 
     <ul class="steps steps-vertical text-md text-base-content font-medium">
       <li class="step step-primary">Regístrate (Sólo email y password son obligatorios).</li>
-      <li class="step step-info">Suscríbete a una quinieal (Fase 1 de grupos y sus rondas, etc..).</li>
+      <li class="step step-info">Suscríbete a una quiniela (Fase 1 de grupos y sus rondas, etc..).</li>
       <li class="step step-neutral">Llena el marcador de cada partido en la tabla, el marcador se bloquea 5 minutos antes de inicio del partido.</li>
       <li class="step step-warning">Ya estás participando.</li>
     </ul>
@@ -94,7 +94,7 @@
       <li>* Para editar un marcador pronosticado solo haz click en el boton gris de la sección "Editable", tu marcador para ese partido se reiniciará </li>
       <li>* Si el botón está verde puedes editar libremente.</li>
       <li>* La edición se cierra 5 minutos antes de la hora programada del partido.</li>
-      <li>* No olvides marcar su partido como no editable (botón en gris), si queda con la leyenda "sin marcador", no puede generar puntos, no se asume que es cero...</li>
+      <li>* No olvides marcar tu partido como no editable (botón en gris), si queda con la leyenda "sin marcador", no puede generar puntos, no se asume que es cero...</li>
     </ul>
 
 

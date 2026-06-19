@@ -1,4 +1,4 @@
-<x-layouts.app :powergrid=true title='Fase de grupos' :js="[]">
+<x-layouts.app :powergrid=false title='Fase de grupos' :js="[]">
     <x-layouts.main>
       <x-slot name="breadcrumbs">
         <li><a>{{ __('Home') }}</a></li>

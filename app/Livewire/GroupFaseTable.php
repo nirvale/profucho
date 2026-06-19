@@ -281,43 +281,56 @@ final class GroupFaseTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('Id', 'id'),
+            Column::make('Id', 'id')
+            ->headerAttribute('w-24')
+            ->bodyAttribute('w-24'),
             // Column::make(__('Name'), 'name','users.name')
             //     ->sortable()
             //     ->searchable(),
+
           Column::make(__('Date'), 'date','games.date')
               ->sortable()
-              ->searchable(),
+              ->searchable()
+              ->headerAttribute('w-64')
+              ->bodyAttribute('w-64'),
           Column::make(__('Home Team'), 'hometeam','hometeams.name')
               ->sortable()
-              ->searchable(),
+              ->searchable()
+              ->headerAttribute('w-64')
+              ->bodyAttribute('w-64'),
           Column::make(__('Away Team'), 'awayteam','awayteams.name')
               ->sortable()
-              ->searchable(),
+              ->searchable()
+              ->headerAttribute('w-64')
+              ->bodyAttribute('w-64'),
           Column::make(__('Home Score'), 'home_score_p')  // ← Nombre real, no 'homescorep'
                ->sortable()
                ->searchable()
+               ->headerAttribute('w-24')
+               ->bodyAttribute('w-24')
                ->contentClasses('text-error font-bold text-md animate-pulse')
                ->editOnClick(
                  hasPermission: auth()->user()?->can('Jugar'),
                  saveOnMouseOut: true
                 ),
 
-           Column::make(__('Away Score'), 'away_score_p')  // ← Nombre real
-               ->sortable()
-               ->searchable()
-               ->contentClasses('text-error font-bold text-md animate-pulse')
-               ->editOnClick(
-                 hasPermission: auth()->user()?->can('Jugar'),
-                 saveOnMouseOut: true
+         Column::make(__('Away Score'), 'away_score_p')  // ← Nombre real
+             ->sortable()
+             ->searchable()
+             ->headerAttribute('w-24')
+             ->bodyAttribute('w-24')
+             ->contentClasses('text-error font-bold text-md animate-pulse')
+             ->editOnClick(
+               hasPermission: auth()->user()?->can('Jugar'),
+               saveOnMouseOut: true
 
-               ),
+             ),
           Column::make(__('Score'), 'userscore','bets.score')
               ->sortable()
               ->contentClasses('text-success font-bold' )
               ->searchable()
-              ->headerAttribute('w-8')
-              ->bodyAttribute('w-8')
+              ->headerAttribute('w-24')
+              ->bodyAttribute('w-24')
               ->withSum('Score total', header: true, footer: false),
           // Column::make(__('Estatus'), 'status','bets.status')
           //     ->sortable()
@@ -327,8 +340,8 @@ final class GroupFaseTable extends PowerGridComponent
               // field: 'status',
 
             )
-              ->headerAttribute('w-8')
-              ->bodyAttribute('w-8')
+              ->headerAttribute('w-24')
+              ->bodyAttribute('w-24')
               ->toggleable(
                   hasPermission: auth()->user()?->can('Jugar'),
                   trueLabel: 'Yes',
@@ -392,15 +405,13 @@ final class GroupFaseTable extends PowerGridComponent
                 }
               }
 
-              $bet->push();  // ← Esto es lo que faltaba
+              $bet->push();  
+
           }
 
             // $bet->save();
             DB::commit();
             $this->dispatch('notifyalpine', '¡Éxito!', 'Se activó/desactivó la edición del pronóstico:<br>'.$id, 'success', 3000);
-            // if (  $nuevoValor===0 ) {
-            //   $this->skipRender();
-            // }
 
         } catch (\Exception $e) {
             DB::rollback();
