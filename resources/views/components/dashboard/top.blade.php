@@ -2,5 +2,6 @@
 
 <x-dashboard.ranking :stage-id=1 :round-id=1 title="First stage" subtitle="First round"/>
 <x-dashboard.ranking :stage-id=1 :round-id=2 title="First stage" subtitle="Second round"/>
+<x-dashboard.ranking :stage-id=1 :round-id=3 title="First stage" subtitle="Third round"/>
 
 </div>
