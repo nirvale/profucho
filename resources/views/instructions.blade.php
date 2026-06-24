@@ -100,6 +100,7 @@
 
   </div>
 </div>
+* A partir de la tercera ronda, al acertar al ganador del partido o empate se suman 6 puntos.
       </x-layouts.flexwrap>
     </x-layouts.main>
     <x-slot:modals >
