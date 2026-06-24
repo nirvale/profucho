@@ -346,9 +346,9 @@ final class GameTable extends PowerGridComponent
                         // }
 
                         if ($pronosticWhoWin == $whoWin) {
-                            $bet->increment('score', 3);  // Directo, sin ternario
+                            $bet->increment('score', 6);  // Directo, sin ternario
                             if ($bet->user && $bet->user->profile) {
-                                $bet->user->profile->increment('score_' . $game->round, 3);
+                                $bet->user->profile->increment('score_' . $game->round, 6);
                             }
                         }
                     }

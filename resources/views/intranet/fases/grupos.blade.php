@@ -19,7 +19,7 @@
       </x-layouts.main-header>
       <x-layouts.flexwrap >
 
-        <x-intranet.fases.grupos-tabs :roundIdActive=2 />
+        <x-intranet.fases.grupos-tabs :roundIdActive=3 />
 
       </x-layouts.flexwrap>
     </x-layouts.main>
