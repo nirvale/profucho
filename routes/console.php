@@ -14,9 +14,11 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-// Schedule::call(function () {
-//     DB::table('games')->update();
-// })->daily();
+Artisan::command('profucho:hora', function () {
+    $now = Carbon::now()->toImmutable();
+    Log::info("Ahora via hora: " . $now->format('Y-m-d H:i:s'));
+    $this->comment("Ahora via hora: " . $now->format('Y-m-d H:i:s'));
+})->purpose('Display an inspiring quote');
 
 Artisan::command('profucho:lock-games', function () {
     $now = Carbon::now()->toImmutable();
