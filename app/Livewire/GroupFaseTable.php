@@ -376,12 +376,14 @@ final class GroupFaseTable extends PowerGridComponent
             Log::info('ejecutanto ronda:'.$this->round);
             if ($this->suscDisabled) {
               DB::rollback();
+              Log::info('Intento de registrarse con ronda cerrada, usuario:'. auth()->user()->name);
               $this->dispatch('notifyalpine', '¡Ya es tarde papu!', 'Se ha cerrado esta ronda:<br> ronda '.$this->round, 'error', 0);
               return;
             }
 
             if ($bet->game->is_active==0) {
               DB::rollback();
+              Log::info('Intento de edición en partido deshabilitado, usuario:'. auth()->user()->name);
               $this->dispatch('notifyalpine', '¡Ya es tarde papu!', 'El partido ya se cerró' , 'error', 0);
               return;
             }
@@ -405,7 +407,7 @@ final class GroupFaseTable extends PowerGridComponent
                 }
               }
 
-              $bet->push();  
+              $bet->push();
 
           }
 

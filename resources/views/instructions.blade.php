@@ -39,8 +39,8 @@
           <tr>
             <th>1</th>
             <td>Acertar Ganador o empate</td>
-            <td>3</td>
-            <td>Si el jugador acierta al pronosticar el equipo ganador o empate en el partido, suma 3 puntos</td>
+            <td>6</td>
+            <td>Si el jugador acierta al pronosticar el equipo ganador o empate en el partido, suma 6 puntos</td>
           </tr>
           <!-- row 2 -->
           <tr>
