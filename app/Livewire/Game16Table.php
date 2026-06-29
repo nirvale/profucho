@@ -16,9 +16,9 @@ use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use App\Models\Intranet\Team;
 
-final class GameTable extends PowerGridComponent
+final class Game16Table extends PowerGridComponent
 {
-    public string $tableName = 'gameTable';
+    public string $tableName = 'game16Table';
     public bool $showErrorBag = true;
 
 
@@ -232,14 +232,14 @@ final class GameTable extends PowerGridComponent
                 if (!is_null($game->away_score)) {
                     if ($game->home_score > $game->away_score) {
                         $whoWin = 1;
-                        Team::where('id', $game->home_team_id)->increment('points', 3);
+                        // Team::where('id', $game->home_team_id)->increment('points', 3);
                     } elseif ($game->home_score < $game->away_score) {
                         $whoWin = 2;
-                        Team::where('id', $game->away_team_id)->increment('points', 3);
+                        // Team::where('id', $game->away_team_id)->increment('points', 3);
                     } elseif ($game->home_score == $game->away_score) {
                         $whoWin = 3;
-                        Team::where('id', $game->away_team_id)->increment('points', 1);
-                        Team::where('id', $game->home_team_id)->increment('points', 1);
+                        // Team::where('id', $game->away_team_id)->increment('points', 1);
+                        // Team::where('id', $game->home_team_id)->increment('points', 1);
                     }
                 }
 
@@ -284,10 +284,10 @@ final class GameTable extends PowerGridComponent
                 $game->save();
 
                 // Estadísticas de goles
-                Team::where('id', $game->home_team_id)->increment('goals_scored', $safeValue);
-                Team::where('id', $game->home_team_id)->increment('goals_difference', $safeValue);
-                Team::where('id', $game->away_team_id)->increment('goals_conceded', $safeValue);
-                Team::where('id', $game->away_team_id)->decrement('goals_difference', $safeValue);
+                // Team::where('id', $game->home_team_id)->increment('goals_scored', $safeValue);
+                // Team::where('id', $game->home_team_id)->increment('goals_difference', $safeValue);
+                // Team::where('id', $game->away_team_id)->increment('goals_conceded', $safeValue);
+                // Team::where('id', $game->away_team_id)->decrement('goals_difference', $safeValue);
             }
 
             // ==================== AWAY_SCORE ====================
@@ -305,14 +305,14 @@ final class GameTable extends PowerGridComponent
                 if (!is_null($game->home_score)) {
                     if ($game->home_score > $game->away_score) {
                         $whoWin = 1;
-                        Team::where('id', $game->home_team_id)->increment('points', 3);
+                        // Team::where('id', $game->home_team_id)->increment('points', 3);
                     } elseif ($game->home_score < $game->away_score) {
                         $whoWin = 2;
-                        Team::where('id', $game->away_team_id)->increment('points', 3);
+                        // Team::where('id', $game->away_team_id)->increment('points', 3);
                     } elseif ($game->home_score == $game->away_score) {
                         $whoWin = 3;
-                        Team::where('id', $game->away_team_id)->increment('points', 1);
-                        Team::where('id', $game->home_team_id)->increment('points', 1);
+                        // Team::where('id', $game->away_team_id)->increment('points', 1);
+                        // Team::where('id', $game->home_team_id)->increment('points', 1);
                     }
                 }
 
@@ -357,10 +357,10 @@ final class GameTable extends PowerGridComponent
                 $game->save();
 
                 // Estadísticas de goles
-                Team::where('id', $game->away_team_id)->increment('goals_scored', $safeValue);
-                Team::where('id', $game->away_team_id)->increment('goals_difference', $safeValue);
-                Team::where('id', $game->home_team_id)->increment('goals_conceded', $safeValue);
-                Team::where('id', $game->home_team_id)->decrement('goals_difference', $safeValue);
+                // Team::where('id', $game->away_team_id)->increment('goals_scored', $safeValue);
+                // Team::where('id', $game->away_team_id)->increment('goals_difference', $safeValue);
+                // Team::where('id', $game->home_team_id)->increment('goals_conceded', $safeValue);
+                // Team::where('id', $game->home_team_id)->decrement('goals_difference', $safeValue);
             }
 
             DB::commit();

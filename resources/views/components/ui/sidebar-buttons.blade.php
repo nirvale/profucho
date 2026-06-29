@@ -34,6 +34,7 @@
                 @auth
                     <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
                     <li><a href="{{ route('fases.grupos') }}" class="{{ request()->routeIs('fases.grupos') ? 'menu-active' : '' }}">{{__('1 Stage')}}</a></li>
+                    <li><a href="{{ route('fases.dieciseisavos') }}" class="{{ request()->routeIs('fases.dieciseisavos') ? 'menu-active' : '' }}">{{__('Dieciseisavos')}}</a></li>
                 @else
                     <li><a href="{{ route('login') }}">Log In</a></li>
                     @if (Route::has('register'))

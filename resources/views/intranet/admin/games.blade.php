@@ -17,7 +17,7 @@
       </x-layouts.main-header>
       <x-layouts.flexwrap >
 
-        <livewire:game-table/>
+        <livewire:game16-table/>
 
       </x-layouts.flexwrap>
     </x-layouts.main>

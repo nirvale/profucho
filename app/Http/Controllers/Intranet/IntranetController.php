@@ -35,4 +35,8 @@ class IntranetController extends Controller
       return view('intranet.fases.grupos');
   }
 
+  public function dieciseisavos()
+  {
+      return view('intranet.fases.dieciseisavos');
+  }
 }
