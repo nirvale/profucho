@@ -3,7 +3,7 @@
   <!-- name of each tab group should be unique -->
   <div class="tabs tabs-lift -mx-5">
 
-    <input id="tabFaseUno" type="radio" name="my_tabs_2" class="tab" aria-label="{{__('Dieciseisavos')}}" {{ $roundIdActive == 4 ? 'checked' : '' }} />
+    <input id="tabDieciseisavos" type="radio" name="my_tabs_2" class="tab" aria-label="{{__('Dieciseisavos')}}" {{ $roundIdActive == 4 ? 'checked' : '' }} />
     <div class="tab-content border-base-300 bg-base-100 p-0 lg:p-2">
       <livewire:group-fase-table :round=4 :stage=2 :suscDisabled=false />
     </div>
